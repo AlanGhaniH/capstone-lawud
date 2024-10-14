@@ -53,7 +53,7 @@ float rpm, rotasi_per_detik;        // rotasi/detik
 float kecepatan_kilometer_per_jam;  // kilometer/jam
 float kecepatan_meter_per_detik;    // meter/detik
 volatile boolean flag = false;
-unsigned long lora_millis = 0;
+uint32_t lora_millis = 0;
 
 void ICACHE_RAM_ATTR rpm_anemometer() {
     flag = true;
@@ -211,6 +211,11 @@ void loop() {
     // updateBME(Telemtry);
     // updateUS(Telemtry);
     updateWD(Telemetry);
-    sendData(Telemetry, "Jawa");
-    delay(1000);
+
+    if (millis() - lora_millis > 1000) {
+        sendData(Telemetry, "Jawa");
+        lora_millis = millis();
+    }
+    // sendData(Telemetry, "Jawa");
+    // delay(1000);
 }
